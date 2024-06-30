@@ -54,7 +54,8 @@ void GameLogic::eventController() {
 }
 
 void GameLogic::clearScreen() {
-    
+    SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
+    SDL_RenderClear(render);
 }
 
 void GameLogic::logic() {
@@ -63,6 +64,10 @@ void GameLogic::logic() {
 
 void GameLogic::draw() {
     
+    
+    
+    SDL_RenderPresent(render);
+    SDL_Delay(frameTime);
 }
 
 GameLogic::~GameLogic() {

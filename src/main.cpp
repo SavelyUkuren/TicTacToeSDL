@@ -8,11 +8,8 @@
 
 using namespace std;
 
-#define FPS 60
-
 int main()
 {
-
     GameLogic gameLogic(640, 480);
     gameLogic.StartGame();
 

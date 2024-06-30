@@ -26,6 +26,8 @@ class GameLogic {
     Uint32 startTime, endTime = 0;
     float delta = 0;
     
+    const int frameTime = 1 / 30;
+    
 public:
     GameLogic(int screenWidth, int screenHeight);
     
