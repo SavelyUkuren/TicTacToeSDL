@@ -3,12 +3,22 @@
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
 
+#include "TicTacToeLogic.hpp"
+
 using namespace std;
 
 #define FPS 60
 
 int main()
 {
+    TicTacToeLogic logic;
+    logic.setSymbol(TicTacToeSymbol::X, 0, 0);
+    logic.setSymbol(TicTacToeSymbol::X, 1, 0);
+    logic.setSymbol(TicTacToeSymbol::X, 2, 0);
+    logic.printField();
+    
+    
+    return 0;
     SDL_Init(SDL_INIT_VIDEO);
 
     SDL_Window *window = SDL_CreateWindow(
@@ -22,11 +32,14 @@ int main()
 
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
     
+    Uint32 startTime = SDL_GetTicks();
+    Uint32 endTime = 0;
+    float delta = 0;
     bool isquit = false;
     SDL_Event event;
     while (!isquit) {
         startTime = SDL_GetTicks();
-        delta = (float)(startTime - lastTime) / 1000;
+        delta = (float)(startTime - endTime) / 1000;
         
         while (SDL_PollEvent(&event)) {
             switch (event.type)
@@ -45,7 +58,7 @@ int main()
         
         SDL_RenderPresent(renderer);
         SDL_Delay(1 / FPS);
-        lastTime = startTime;
+        endTime = startTime;
     }
 
     SDL_DestroyRenderer(renderer);
