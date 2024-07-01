@@ -12,6 +12,15 @@
 #include <SDL2_image/SDL_image.h>
 
 #include <stdio.h>
+#include <vector>
+#include <iostream>
+
+#include "object.h"
+#include "users.h"
+#include "math/point.h"
+#include "TicTacToeLogic.hpp"
+
+using namespace std;
 
 class GameLogic {
     
@@ -22,11 +31,20 @@ class GameLogic {
     SDL_Event event;
     
     bool isGameOpen = false;
+    bool isGameOver = false;
     
     Uint32 startTime, endTime = 0;
     float delta = 0;
     
     const int frameTime = 1 / 30;
+    
+    const float rectSize = 120;
+    vector<object> rectsOfField;
+    
+    users currentUser = ::player;
+    TicTacToeLogic ticTacToeLogic;
+    
+    vector<point> winLinePoints;
     
 public:
     GameLogic(int screenWidth, int screenHeight);

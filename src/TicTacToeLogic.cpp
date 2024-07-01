@@ -23,6 +23,17 @@ void TicTacToeLogic::setSymbol(TicTacToeSymbol symbol, int x, int y) {
     updateStats();
 }
 
+void TicTacToeLogic::setSymbol(TicTacToeSymbol symbol, int index) {
+    if (index < 0 || index > 8) {
+        cerr << "Index out of field!" << endl;
+        return;
+    }
+    
+    field[index] = symbol;
+    checkWinner();
+    updateStats();
+}
+
 void TicTacToeLogic::printField() {
     int index = 0;
     for (int i = 0; i < 3; i++) {
@@ -42,40 +53,48 @@ void TicTacToeLogic::printField() {
 
 void TicTacToeLogic::checkWinner() {
     // Check horizontal
-    if (field[0] == field[1] && field[1] == field[2]) {
+    if (field[0] == field[1] && field[1] == field[2] && field[0] != none) {
         winner = field[0];
+        winType = hor0;
         return;
     }
-    if (field[3] == field[4] && field[4] == field[5]) {
+    if (field[3] == field[4] && field[4] == field[5] && field[3] != none) {
         winner = field[3];
+        winType = hor1;
         return;
     }
-    if (field[6] == field[7] && field[7] == field[8]) {
+    if (field[6] == field[7] && field[7] == field[8] && field[6] != none) {
         winner = field[6];
+        winType = hor2;
         return;
     }
     
     // Check vertical
-    if (field[0] == field[3] && field[3] == field[6]) {
+    if (field[0] == field[3] && field[3] == field[6] && field[0] != none) {
         winner = field[0];
+        winType = ver0;
         return;
     }
-    if (field[1] == field[4] && field[4] == field[7]) {
+    if (field[1] == field[4] && field[4] == field[7] && field[1] != none) {
         winner = field[1];
+        winType = ver1;
         return;
     }
-    if (field[2] == field[5] && field[5] == field[8]) {
+    if (field[2] == field[5] && field[5] == field[8] && field[2] != none) {
         winner = field[2];
+        winType = ver2;
         return;
     }
     
     //Check diagonal
-    if (field[0] == field[4] && field[4] == field[8]) {
+    if (field[0] == field[4] && field[4] == field[8] && field[0] != none) {
         winner = field[0];
+        winType = diag0;
         return;
     }
-    if (field[2] == field[4] && field[4] == field[6]) {
+    if (field[2] == field[4] && field[4] == field[6] && field[2] != none) {
         winner = field[2];
+        winType = diag1;
         return;
     }
 }
@@ -100,4 +119,12 @@ TicTacToeSymbol &TicTacToeLogic::getWinner() {
 
 TicTacToeLogic::Stats &TicTacToeLogic::getStats() {
     return stats;
+}
+
+TicTacToeSymbol &TicTacToeLogic::getFieldSymbol(int index) {
+    return field[index];
+}
+
+WinType &TicTacToeLogic::getWinType() {
+    return winType;
 }
