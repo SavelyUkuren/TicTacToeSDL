@@ -125,6 +125,10 @@ TicTacToeSymbol &TicTacToeLogic::getFieldSymbol(int index) {
     return field[index];
 }
 
+TicTacToeSymbol &TicTacToeLogic::getFieldSymbol(int x, int y) {
+    return field[y * 3 + x];
+}
+
 WinType &TicTacToeLogic::getWinType() {
     return winType;
 }

@@ -54,6 +54,7 @@ public:
     TicTacToeSymbol &getWinner();
     Stats &getStats();
     TicTacToeSymbol &getFieldSymbol(int index);
+    TicTacToeSymbol &getFieldSymbol(int x, int y);
     WinType &getWinType();
     
 private:

@@ -15,10 +15,11 @@
 #include <vector>
 #include <iostream>
 
-#include "object.h"
 #include "users.h"
 #include "math/point.h"
 #include "TicTacToeLogic.hpp"
+#include "Node.hpp"
+#include "Field.hpp"
 
 using namespace std;
 
@@ -38,13 +39,13 @@ class GameLogic {
     
     const int frameTime = 1 / 30;
     
-    const float rectSize = 120;
-    vector<object> rectsOfField;
-    
     users currentUser = ::player;
     TicTacToeLogic ticTacToeLogic;
     
-    vector<point> winLinePoints;
+    Node rootNode;
+    
+    const float fieldSize = 360;
+    Field *field;
     
 public:
     GameLogic(int screenWidth, int screenHeight);
