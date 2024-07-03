@@ -20,6 +20,8 @@
 #include "TicTacToeLogic.hpp"
 #include "Node.hpp"
 #include "Field.hpp"
+#include "GameState.h"
+#include "Menu.hpp"
 
 using namespace std;
 
@@ -47,6 +49,9 @@ class GameLogic {
     const float fieldSize = 360;
     Field *field;
     
+    GameState gameState;
+    Menu *mainMenu;
+    
 public:
     GameLogic(int screenWidth, int screenHeight);
     
@@ -55,6 +60,7 @@ public:
     ~GameLogic();
     
 private:
+    void resetGame();
     void eventController();
     void clearScreen();
     void logic();
