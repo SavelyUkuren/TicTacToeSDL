@@ -10,8 +10,11 @@ using namespace std;
 
 int main()
 {
+    TTF_Init();
+
     GameLogic gameLogic(640, 480);
     gameLogic.StartGame();
 
+    TTF_Quit();
     return 0;
 }

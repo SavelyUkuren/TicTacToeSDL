@@ -13,6 +13,7 @@
 #include <vector>
 
 #include <SDL2/SDL.h>
+#include <SDL_ttf.h>
 
 #include "GameState.h"
 #include "Node.hpp"
@@ -27,6 +28,9 @@ class Menu {
     GameState *gameState;
 
     vector<Node> buttons;
+    TTF_Font *font;
+    SDL_Surface *startGameTextSurface;
+    SDL_Texture *startGameTextTexture;
 
 public:
     Menu(SDL_Renderer *render,
@@ -38,6 +42,8 @@ public:
     void draw();
 
     void setGameState(GameState *gameState);
+
+    ~Menu();
 };
 
 #endif /* Menu_hpp */

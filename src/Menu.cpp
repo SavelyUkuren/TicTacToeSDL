@@ -14,10 +14,15 @@ Menu::Menu(SDL_Renderer *render, float x, float y, float w, float h) {
     this->w = w;
     this->h = h;
 
+    font = TTF_OpenFont("assets/Cannonade.ttf", 24);
+
     Node startButton = Node();
     startButton.setName("StartButton");
     startButton.setPosition(x + 0, y + 0);
     startButton.setSize(w, 44);
+
+    startGameTextSurface = TTF_RenderText_Solid(font, "Player vs Player", SDL_Color{255, 255, 255, 255});
+    startGameTextTexture = SDL_CreateTextureFromSurface(render, startGameTextSurface);
 
     buttons.push_back(startButton);
 }
@@ -54,6 +59,15 @@ void Menu::draw() {
             };
             SDL_SetRenderDrawColor(render, 0, 255, 0, 255);
             SDL_RenderDrawRectF(render, &r);
+            
+            SDL_Rect tRect {
+                static_cast<int>(r.x + r.w / 2 - 200 / 2),
+                static_cast<int>(r.y + r.h / 2 - 40 / 2),
+                200,
+                40
+            };
+
+            SDL_RenderCopy(render, startGameTextTexture, nullptr, &tRect);
         }
 
     }
@@ -61,4 +75,11 @@ void Menu::draw() {
 
 void Menu::setGameState(GameState *gameState) {
     this->gameState = gameState;
+}
+
+Menu::~Menu() {
+    font = nullptr;
+    startGameTextTexture = nullptr;
+    SDL_FreeSurface(startGameTextSurface);
+    TTF_CloseFont(font);
 }

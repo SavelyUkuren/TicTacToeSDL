@@ -22,6 +22,14 @@ GameLogic::GameLogic(int screenWidth, int screenHeight) {
     
     render = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 
+    font = TTF_OpenFont("assets/Cannonade.ttf", 24);
+
+    player1StatsSurface = TTF_RenderText_Solid(font, "X: 0", {255, 255, 255, 255});
+    player1StatsTexture = SDL_CreateTextureFromSurface(render, player1StatsSurface);
+
+    player2StatsSurface = TTF_RenderText_Solid(font, "O: 0", {255, 255, 255, 255});
+    player2StatsTexture = SDL_CreateTextureFromSurface(render, player1StatsSurface);
+
     gameState = menu;
 
     field = new Field(render,
@@ -40,7 +48,6 @@ GameLogic::GameLogic(int screenWidth, int screenHeight) {
     rootNode.setName("rootNode");
     rootNode.setPosition(0, 0);
     rootNode.setSize(screenWidth, screenHeight);
-
 }
 
 void GameLogic::StartGame() {
@@ -73,9 +80,11 @@ void GameLogic::eventController() {
             if (event.key.keysym.sym == SDLK_ESCAPE) {
                 gameState = menu;
                 resetGame();
+                ticTacToeLogic.getStats().xCount = 0;
+                ticTacToeLogic.getStats().oCount = 0;
             }
         }
-
+        
         if (gameState == menu) {
             mainMenu->eventController(event);
         } else if (gameState == game) {
@@ -144,20 +153,48 @@ void GameLogic::draw() {
             };
             SDL_RenderDrawRectF(render, &r);
         }
-        
+
+        drawText();
     }
     
     SDL_SetRenderDrawColor(render, 0, 255, 0, 255);
     SDL_RenderDrawPoint(render, screenWidth / 2, screenHeight / 2);
     
     SDL_RenderPresent(render);
-    SDL_Delay(frameTime);
+    SDL_Delay(frameTime * 1000.0f);
+}
+
+void GameLogic::drawText() {
+    SDL_Rect p1Rect {
+        16, 16, 50, 44
+    };
+
+    SDL_Rect p2Rect {
+        16, 70, 50, 44
+    };
+
+    string p1Stat = "X: " + to_string(ticTacToeLogic.getStats().xCount);
+    player1StatsSurface = TTF_RenderText_Solid(font, p1Stat.c_str(), {255, 255, 255, 255});
+    player1StatsTexture = SDL_CreateTextureFromSurface(render, player1StatsSurface);
+
+    string p2Stat = "O: " + to_string(ticTacToeLogic.getStats().oCount);
+    player2StatsSurface = TTF_RenderText_Solid(font, p2Stat.c_str(), {255, 255, 255, 255});
+    player2StatsTexture = SDL_CreateTextureFromSurface(render, player2StatsSurface);
+
+    SDL_RenderCopy(render, player1StatsTexture, nullptr, &p1Rect);
+    SDL_RenderCopy(render, player2StatsTexture, nullptr, &p2Rect);
 }
 
 GameLogic::~GameLogic() {
     field = nullptr;
     mainMenu = nullptr;
-    
+    font = nullptr;
+    player1StatsSurface = nullptr;
+    player1StatsTexture = nullptr;
+    player2StatsSurface = nullptr;
+    player2StatsTexture = nullptr;
+
+    TTF_CloseFont(font);
     SDL_DestroyRenderer(render);
     SDL_DestroyWindow(window);
     SDL_Quit();

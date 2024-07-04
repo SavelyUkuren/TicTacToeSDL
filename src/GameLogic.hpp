@@ -9,6 +9,7 @@
 #define GameLogic_hpp
 
 #include <SDL2/SDL.h>
+#include <SDL_ttf.h>
 #include <SDL2_image/SDL_image.h>
 
 #include <stdio.h>
@@ -39,7 +40,7 @@ class GameLogic {
     Uint32 startTime, endTime = 0;
     float delta = 0;
     
-    const int frameTime = 1 / 30;
+    const float frameTime = 1.0f / 30.0f;
     
     users currentUser = ::player;
     TicTacToeLogic ticTacToeLogic;
@@ -51,6 +52,13 @@ class GameLogic {
     
     GameState gameState;
     Menu *mainMenu;
+
+    TTF_Font *font;
+    SDL_Surface *player1StatsSurface;
+    SDL_Texture *player1StatsTexture;
+
+    SDL_Surface *player2StatsSurface;
+    SDL_Texture *player2StatsTexture;
     
 public:
     GameLogic(int screenWidth, int screenHeight);
@@ -65,6 +73,8 @@ private:
     void clearScreen();
     void logic();
     void draw();
+
+    void drawText();
 };
 
 #endif /* GameLogic_hpp */
