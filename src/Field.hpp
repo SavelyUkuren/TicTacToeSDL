@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include <SDL2_image/SDL_image.h>
 #include <vector>
 #include <iostream>
 #include <functional>
@@ -21,6 +22,8 @@
 using namespace std;
 
 class Field {
+
+    const bool drawDebugLines = false;
     
     SDL_Renderer *render;
     float x, y, width, height = 0;
@@ -32,6 +35,15 @@ class Field {
     bool isWin = false;
     Node winLineStart;
     Node winLineEnd;
+
+    SDL_Surface *fieldSurface;
+    SDL_Texture *fieldTexture;
+
+    SDL_Surface *xSurface;
+    SDL_Texture *xTexture;
+
+    SDL_Surface *oSurface;
+    SDL_Texture *oTexture;
     
 public:
     Field();
@@ -50,6 +62,8 @@ public:
 
     void setTicTacToeLogic(TicTacToeLogic *ticTacToeLogic);
     Node *getNodeByName(string name);
+
+    ~Field();
 };
 
 #endif /* Field_hpp */

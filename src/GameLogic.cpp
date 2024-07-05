@@ -24,13 +24,18 @@ GameLogic::GameLogic(int screenWidth, int screenHeight) {
 
     font = TTF_OpenFont("assets/Cannonade.ttf", 90);
 
-    player1StatsSurface = TTF_RenderText_Solid(font, "X: 0", {255, 255, 255, 255});
+    player1StatsSurface = TTF_RenderText_Solid(font, "X: 0", {0, 0, 0, 255});
     player1StatsTexture = SDL_CreateTextureFromSurface(render, player1StatsSurface);
 
-    player2StatsSurface = TTF_RenderText_Solid(font, "O: 0", {255, 255, 255, 255});
+    player2StatsSurface = TTF_RenderText_Solid(font, "O: 0", {0, 0, 0, 255});
     player2StatsTexture = SDL_CreateTextureFromSurface(render, player1StatsSurface);
 
+    infoSurface = TTF_RenderText_Blended(font, "'r' - Reset game, 'Esc' - menu", {0, 0, 0, 255});
+    infoTexture = SDL_CreateTextureFromSurface(render, infoSurface);
+
     gameState = menu;
+
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
     field = new Field(render,
                       screenWidth / 2 - fieldSize / 2,
@@ -150,6 +155,8 @@ void GameLogic::logic() {
 }
 
 void GameLogic::draw() {
+    SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
+    SDL_RenderClear(render);
     
     if (gameState == menu) {
         
@@ -173,7 +180,7 @@ void GameLogic::draw() {
 
         drawText();
     }
-    
+
     SDL_SetRenderDrawColor(render, 0, 255, 0, 255);
     SDL_RenderDrawPoint(render, screenWidth / 2, screenHeight / 2);
     
@@ -190,16 +197,21 @@ void GameLogic::drawText() {
         16, 70, 50, 44
     };
 
+    SDL_Rect infoRect {
+        16, screenHeight - 40, 230, 20
+    };
+
     string p1Stat = "X: " + to_string(ticTacToeLogic.getStats().xCount);
-    player1StatsSurface = TTF_RenderText_Solid(font, p1Stat.c_str(), {255, 255, 255, 255});
+    player1StatsSurface = TTF_RenderText_Solid(font, p1Stat.c_str(), {0, 0, 0, 255});
     player1StatsTexture = SDL_CreateTextureFromSurface(render, player1StatsSurface);
 
     string p2Stat = "O: " + to_string(ticTacToeLogic.getStats().oCount);
-    player2StatsSurface = TTF_RenderText_Solid(font, p2Stat.c_str(), {255, 255, 255, 255});
+    player2StatsSurface = TTF_RenderText_Solid(font, p2Stat.c_str(), {0, 0, 0, 255});
     player2StatsTexture = SDL_CreateTextureFromSurface(render, player2StatsSurface);
 
     SDL_RenderCopy(render, player1StatsTexture, nullptr, &p1Rect);
     SDL_RenderCopy(render, player2StatsTexture, nullptr, &p2Rect);
+    SDL_RenderCopy(render, infoTexture, nullptr, &infoRect);
 }
 
 GameLogic::~GameLogic() {

@@ -25,7 +25,16 @@ Field::Field(SDL_Renderer *render,
     fieldNode.setName("Field");
     fieldNode.setPosition(x, y);
     fieldNode.setSize(width, height);
-    
+
+    fieldSurface = IMG_Load("assets/field.png");
+    fieldTexture = SDL_CreateTextureFromSurface(render, fieldSurface);
+
+    xSurface = IMG_Load("assets/X.png");
+    xTexture = SDL_CreateTextureFromSurface(render, xSurface);
+
+    oSurface = IMG_Load("assets/O.png");
+    oTexture = SDL_CreateTextureFromSurface(render, oSurface);
+
     int index = 0;
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
@@ -111,19 +120,29 @@ void Field::logic() {
 }
 
 void Field::draw() {
-    
+
     // Draw field
-    for (Node &fNode : fieldNode.getNodes()) {
-        SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
-        
-        SDL_FRect r {
-            fNode.getX(),
-            fNode.getY(),
-            fNode.getW(),
-            fNode.getH()
-        };
-        SDL_RenderDrawRectF(render, &r);
+    if (drawDebugLines) {
+        for (Node &fNode : fieldNode.getNodes()) {
+            SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
+
+            SDL_FRect r {
+                fNode.getX(),
+                fNode.getY(),
+                fNode.getW(),
+                fNode.getH()
+            };
+            SDL_RenderDrawRectF(render, &r);
+        }
     }
+
+    SDL_Rect fieldTR {
+        static_cast<int>(fieldNode.getX()),
+        static_cast<int>(fieldNode.getY()),
+        static_cast<int>(fieldNode.getW()),
+        static_cast<int>(fieldNode.getH()),
+    };
+    SDL_RenderCopy(render, fieldTexture, nullptr, &fieldTR);
     
     // Draw symbols X or O
     for (Node &sNode : symbols) {
@@ -131,28 +150,42 @@ void Field::draw() {
         float y = sNode.getY();
         float w = sNode.getW();
         float h = sNode.getH();
+
+        SDL_Rect rXT {
+            static_cast<int>(x),
+            static_cast<int>(y),
+            static_cast<int>(w),
+            static_cast<int>(h),
+        };
         
         SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
         
         if (sNode.getName() == "X") {
-            SDL_RenderDrawLineF(render,
-                                x, y, x + w, y + h);
-            SDL_RenderDrawLineF(render,
-                                x + w, y, x, y + h);
+            if (drawDebugLines) {
+                SDL_RenderDrawLineF(render,
+                                    x, y, x + w, y + h);
+                SDL_RenderDrawLineF(render,
+                                    x + w, y, x, y + h);
+            }
+
+            SDL_RenderCopy(render, xTexture, nullptr, &rXT);
         } else if (sNode.getName() == "O") {
-            float zeroSize = (width / 3) - 40;
-            SDL_FRect zero {
-                x + (w / 2) - zeroSize / 2,
-                y + (h / 2) - zeroSize / 2,
-                (width / 3) - 40,
-                (height / 3) - 40
-            };
-            SDL_RenderDrawRectF(render, &zero);
+            if (drawDebugLines) {
+                float zeroSize = (width / 3) - 40;
+                SDL_FRect zero {
+                    x + (w / 2) - zeroSize / 2,
+                    y + (h / 2) - zeroSize / 2,
+                    (width / 3) - 40,
+                    (height / 3) - 40
+                };
+                SDL_RenderDrawRectF(render, &zero);
+            }
+            SDL_RenderCopy(render, oTexture, nullptr, &rXT);
         }
     }
     
     // Draw win line
-    SDL_SetRenderDrawColor(render, 0, 255, 0, 255);
+    SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
     SDL_RenderDrawLine(render,
                        winLineStart.getX(),
                        winLineStart.getY(),
@@ -211,4 +244,10 @@ Node * Field::getNodeByName(string name) {
         if (n.getName() == name) return &n;
     }
     return nullptr;
+}
+
+Field::~Field() {
+    SDL_DestroyTexture(oTexture);
+    SDL_DestroyTexture(fieldTexture);
+    SDL_DestroyTexture(xTexture);
 }

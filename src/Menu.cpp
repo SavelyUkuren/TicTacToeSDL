@@ -14,7 +14,7 @@ Menu::Menu(SDL_Renderer *render, float x, float y, float w, float h) {
     this->w = w;
     this->h = h;
 
-    font = TTF_OpenFont("assets/Cannonade.ttf", 24);
+    font = TTF_OpenFont("assets/Cannonade.ttf", 48);
 
     Node playerVSplayerButton = Node();
     playerVSplayerButton.setName("playerVSplayer");
@@ -26,10 +26,10 @@ Menu::Menu(SDL_Renderer *render, float x, float y, float w, float h) {
     playerVScomputerButton.setPosition(x + 0, y + 52);
     playerVScomputerButton.setSize(w, 44);
 
-    playerVSplayerTextSurface = TTF_RenderText_Solid(font, "Player vs Player", SDL_Color{255, 255, 255, 255});
+    playerVSplayerTextSurface = TTF_RenderText_Solid(font, "Player vs Player", SDL_Color{0, 0, 0, 255});
     playerVSplayerTextTexture = SDL_CreateTextureFromSurface(render, playerVSplayerTextSurface);
 
-    playerVScomputerTextSurface = TTF_RenderText_Solid(font, "Player vs Computer", SDL_Color{255, 255, 255, 255});
+    playerVScomputerTextSurface = TTF_RenderText_Solid(font, "Player vs Computer", SDL_Color{0, 0, 0, 255});
     playerVScomputerTextTexture = SDL_CreateTextureFromSurface(render, playerVScomputerTextSurface);
 
     buttons.push_back(playerVSplayerButton);
@@ -86,7 +86,7 @@ void Menu::draw() {
             SDL_Rect tRect {
                 static_cast<int>(r.x + r.w / 2 - 200 / 2),
                 static_cast<int>(r.y + r.h / 2 - 40 / 2),
-                200,
+                230,
                 40
             };
 

@@ -8,6 +8,8 @@ using namespace std;
 int main()
 {
     std::srand(static_cast<unsigned int>(std::time(0)));
+
+    SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
 
     GameLogic gameLogic(640, 480);

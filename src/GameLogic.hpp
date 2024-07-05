@@ -60,7 +60,10 @@ class GameLogic {
 
     SDL_Surface *player2StatsSurface;
     SDL_Texture *player2StatsTexture;
-    
+
+    SDL_Surface *infoSurface;
+    SDL_Texture *infoTexture;
+
 public:
     GameLogic(int screenWidth, int screenHeight);
     
