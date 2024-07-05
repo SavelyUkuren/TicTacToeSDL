@@ -15,6 +15,7 @@
 #include <SDL2/SDL.h>
 #include <SDL_ttf.h>
 
+#include "GameMode.h"
 #include "GameState.h"
 #include "Node.hpp"
 
@@ -26,11 +27,15 @@ class Menu {
     float x, y, w, h = 0;
 
     GameState *gameState;
+    GameMode *gameMode;
 
     vector<Node> buttons;
     TTF_Font *font;
-    SDL_Surface *startGameTextSurface;
-    SDL_Texture *startGameTextTexture;
+    SDL_Surface *playerVSplayerTextSurface;
+    SDL_Texture *playerVSplayerTextTexture;
+
+    SDL_Surface *playerVScomputerTextSurface;
+    SDL_Texture *playerVScomputerTextTexture;
 
 public:
     Menu(SDL_Renderer *render,
@@ -42,6 +47,7 @@ public:
     void draw();
 
     void setGameState(GameState *gameState);
+    void setGameMode(GameMode *gameMode);
 
     ~Menu();
 };

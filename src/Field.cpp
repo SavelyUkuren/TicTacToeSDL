@@ -205,3 +205,10 @@ void Field::drawSymbol(TicTacToeSymbol symbol, Node *node) {
 void Field::setTicTacToeLogic(TicTacToeLogic *ticTacToeLogic) {
     this->ticTacToeLogic = ticTacToeLogic;
 }
+
+Node * Field::getNodeByName(string name) {
+    for (Node &n : fieldNode.getNodes()) {
+        if (n.getName() == name) return &n;
+    }
+    return nullptr;
+}

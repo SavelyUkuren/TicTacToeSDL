@@ -47,8 +47,9 @@ public:
     void clear();
     Node *interactWithCell(int x, int y);
     void drawSymbol(TicTacToeSymbol symbol, Node *node);
-    
+
     void setTicTacToeLogic(TicTacToeLogic *ticTacToeLogic);
+    Node *getNodeByName(string name);
 };
 
 #endif /* Field_hpp */

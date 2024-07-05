@@ -22,7 +22,7 @@ GameLogic::GameLogic(int screenWidth, int screenHeight) {
     
     render = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 
-    font = TTF_OpenFont("assets/Cannonade.ttf", 24);
+    font = TTF_OpenFont("assets/Cannonade.ttf", 90);
 
     player1StatsSurface = TTF_RenderText_Solid(font, "X: 0", {255, 255, 255, 255});
     player1StatsTexture = SDL_CreateTextureFromSurface(render, player1StatsSurface);
@@ -43,6 +43,7 @@ GameLogic::GameLogic(int screenWidth, int screenHeight) {
         screenHeight / 2 - 100 / 2,
         300, 100);
     mainMenu->setGameState(&gameState);
+    mainMenu->setGameMode(&gameMode);
 
     rootNode = Node();
     rootNode.setName("rootNode");
@@ -128,6 +129,22 @@ void GameLogic::logic() {
     if (gameState == menu) {
         mainMenu->logic();
     } else if (gameState == game) {
+
+        if (gameMode == playerVScomputer &&
+            currentUser == computer &&
+            !isGameOver) {
+            int index = rand() % 9;
+            while (ticTacToeLogic.getFieldSymbol(index) != none) {
+                index = rand() % 9;
+            }
+            ticTacToeLogic.setSymbol(O, index);
+            Node *n = field->getNodeByName(to_string(index));
+            field->drawSymbol(O, n);
+            currentUser = player;
+        }
+        if (ticTacToeLogic.getWinner() != none) {
+            isGameOver = true;
+        }
         field->logic();
     }
 }

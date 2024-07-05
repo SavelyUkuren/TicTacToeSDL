@@ -19,7 +19,8 @@ include_directories(${SDL2_INCLUDE_DIRS})
 include_directories(${SDL2_IMAGE_INCLUDE_DIR})
 include_directories(${SDL2_TTF_INCLUDE_DIR})
 
-add_executable(TicTacToe ${sources})
+add_executable(TicTacToe ${sources}
+        src/GameMode.h)
 
 
 target_include_directories(TicTacToe PRIVATE ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})

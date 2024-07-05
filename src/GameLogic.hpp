@@ -21,6 +21,7 @@
 #include "TicTacToeLogic.hpp"
 #include "Node.hpp"
 #include "Field.hpp"
+#include "GameMode.h"
 #include "GameState.h"
 #include "Menu.hpp"
 
@@ -39,7 +40,6 @@ class GameLogic {
     
     Uint32 startTime, endTime = 0;
     float delta = 0;
-    
     const float frameTime = 1.0f / 30.0f;
     
     users currentUser = ::player;
@@ -51,6 +51,7 @@ class GameLogic {
     Field *field;
     
     GameState gameState;
+    GameMode gameMode;
     Menu *mainMenu;
 
     TTF_Font *font;

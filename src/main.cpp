@@ -1,7 +1,4 @@
 #include <iostream>
-#include <vector>
-#include <SDL2/SDL.h>
-#include <SDL2_image/SDL_image.h>
 
 #include "GameLogic.hpp"
 #include "TicTacToeLogic.hpp"
@@ -10,6 +7,7 @@ using namespace std;
 
 int main()
 {
+    std::srand(static_cast<unsigned int>(std::time(0)));
     TTF_Init();
 
     GameLogic gameLogic(640, 480);

@@ -16,15 +16,24 @@ Menu::Menu(SDL_Renderer *render, float x, float y, float w, float h) {
 
     font = TTF_OpenFont("assets/Cannonade.ttf", 24);
 
-    Node startButton = Node();
-    startButton.setName("StartButton");
-    startButton.setPosition(x + 0, y + 0);
-    startButton.setSize(w, 44);
+    Node playerVSplayerButton = Node();
+    playerVSplayerButton.setName("playerVSplayer");
+    playerVSplayerButton.setPosition(x + 0, y + 0);
+    playerVSplayerButton.setSize(w, 44);
 
-    startGameTextSurface = TTF_RenderText_Solid(font, "Player vs Player", SDL_Color{255, 255, 255, 255});
-    startGameTextTexture = SDL_CreateTextureFromSurface(render, startGameTextSurface);
+    Node playerVScomputerButton = Node();
+    playerVScomputerButton.setName("playerVScomputer");
+    playerVScomputerButton.setPosition(x + 0, y + 52);
+    playerVScomputerButton.setSize(w, 44);
 
-    buttons.push_back(startButton);
+    playerVSplayerTextSurface = TTF_RenderText_Solid(font, "Player vs Player", SDL_Color{255, 255, 255, 255});
+    playerVSplayerTextTexture = SDL_CreateTextureFromSurface(render, playerVSplayerTextSurface);
+
+    playerVScomputerTextSurface = TTF_RenderText_Solid(font, "Player vs Computer", SDL_Color{255, 255, 255, 255});
+    playerVScomputerTextTexture = SDL_CreateTextureFromSurface(render, playerVScomputerTextSurface);
+
+    buttons.push_back(playerVSplayerButton);
+    buttons.push_back(playerVScomputerButton);
 }
 
 void Menu::eventController(SDL_Event &e) {
@@ -34,8 +43,12 @@ void Menu::eventController(SDL_Event &e) {
     if (e.type == SDL_MOUSEBUTTONUP) {
 
         for (Node &button : buttons) {
-            if (button.getName() == "StartButton" && button.isInteract(mouseX, mouseY)) {
+            if (button.getName() == "playerVSplayer" && button.isInteract(mouseX, mouseY)) {
                 *gameState = game;
+                *gameMode = playerVSplayer;
+            } else if (button.getName() == "playerVScomputer" && button.isInteract(mouseX, mouseY)) {
+                *gameState = game;
+                *gameMode = playerVScomputer;
             }
 
         }
@@ -50,16 +63,16 @@ void Menu::logic() {
 
 void Menu::draw() {
     for (Node &button : buttons) {
-        if (button.getName() == "StartButton") {
-            SDL_FRect r{
-                button.getX(),
-                button.getY(),
-                button.getW(),
-                button.getH()
-            };
-            SDL_SetRenderDrawColor(render, 0, 255, 0, 255);
-            SDL_RenderDrawRectF(render, &r);
-            
+        SDL_FRect r{
+            button.getX(),
+            button.getY(),
+            button.getW(),
+            button.getH()
+        };
+        SDL_SetRenderDrawColor(render, 0, 255, 0, 255);
+        SDL_RenderDrawRectF(render, &r);
+
+        if (button.getName() == "playerVSplayer") {
             SDL_Rect tRect {
                 static_cast<int>(r.x + r.w / 2 - 200 / 2),
                 static_cast<int>(r.y + r.h / 2 - 40 / 2),
@@ -67,9 +80,18 @@ void Menu::draw() {
                 40
             };
 
-            SDL_RenderCopy(render, startGameTextTexture, nullptr, &tRect);
-        }
+            SDL_RenderCopy(render, playerVSplayerTextTexture, nullptr, &tRect);
 
+        } else if (button.getName() == "playerVScomputer") {
+            SDL_Rect tRect {
+                static_cast<int>(r.x + r.w / 2 - 200 / 2),
+                static_cast<int>(r.y + r.h / 2 - 40 / 2),
+                200,
+                40
+            };
+
+            SDL_RenderCopy(render, playerVScomputerTextTexture, nullptr, &tRect);
+        }
     }
 }
 
@@ -77,9 +99,16 @@ void Menu::setGameState(GameState *gameState) {
     this->gameState = gameState;
 }
 
+void Menu::setGameMode(GameMode *gameMode) {
+    this->gameMode = gameMode;
+}
+
 Menu::~Menu() {
-    font = nullptr;
-    startGameTextTexture = nullptr;
-    SDL_FreeSurface(startGameTextSurface);
+    SDL_FreeSurface(playerVScomputerTextSurface);
+    SDL_FreeSurface(playerVSplayerTextSurface);
     TTF_CloseFont(font);
+
+    playerVSplayerTextTexture = nullptr;
+    playerVScomputerTextTexture = nullptr;
+    font = nullptr;
 }
